@@ -1,12 +1,11 @@
-import { LevelContext } from "../../structures/context";
 import { APIGuildMember } from "discord-api-types/v9";
 import pagination from "../../structures/utils/pagination";
 import mentionInterface from "../../interfaces/mentionInterface";
-export default {
+export default{
   command: "avatar",
   aliases: ["pfp", "av"],
   description: "Gets a users avatar",
-  exec: async (ctx: LevelContext): Promise<any> => {
+  exec: async (ctx) => {
     let mention: mentionInterface = ctx.getMention(ctx.args.join(" ")),
       user: APIGuildMember | undefined = await ctx.getGuildMember(
         ctx.worker,

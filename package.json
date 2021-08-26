@@ -5,11 +5,14 @@
   "main": "src/index.ts",
   "dependencies": {
     "@discord-rose/flags-middleware": "^1.0.2",
+    "@jpbberry/load-routes": "^1.0.3",
+    "@sapphire/type": "^2.1.0",
     "asynckit": "^0.4.0",
     "combined-stream": "^1.0.8",
     "delayed-stream": "^1.0.0",
     "discord-api-types": "^0.22.0",
     "discord-rose": "^1.5.1",
+    "express": "^4.17.1",
     "form-data": "^3.0.1",
     "mime-db": "^1.49.0",
     "mime-types": "^2.1.32",
@@ -18,6 +21,7 @@
     "prisma": "^2.29.1",
     "querystring": "^0.2.1",
     "readdir-plus": "^1.1.1",
+    "string-toolkit": "^1.5.0",
     "ws": "^8.2.0"
   },
   "devDependencies": {
