@@ -1,16 +1,18 @@
 import pagination from "../../structures/utils/pagination";
+import { transpile } from "typescript";
 export default {
   command: "eval",
   aliases: ["e", "evak"],
   description: "Eval's code",
   ownerOnly: true,
   exec: async (ctx): Promise<void> => {
-    const code = ctx.args.join(" "),
+    let code = ctx.args.join(" "),
       { inspect } = require("util"),
       { Type } = require("@sapphire/type"),
       { performance } = require("perf_hooks");
     try {
       let time = performance.now();
+      code = transpile(code);
       let evaled = eval(code);
       if (evaled && evaled instanceof Promise) evaled = await evaled;
       let type = new Type(evaled).toString();
@@ -33,8 +35,7 @@ export default {
       );
       await pagination(ctx, ctx.worker.pagination, evalEmbeds);
     } catch (err) {
-      return await ctx
-        .embed()
+      return await ctx.embed
         .color(ctx.color)
         .description(
           `\`\`\`js\n ${err.message.replace(
@@ -42,7 +43,8 @@ export default {
             ""
           )}\`\`\``
         )
-        .title("Error");
+        .title("Error")
+        .send();
     }
   },
 };
