@@ -6,6 +6,7 @@
   "dependencies": {
     "@discord-rose/flags-middleware": "^1.0.2",
     "@jpbberry/load-routes": "^1.0.3",
+    "@jpbberry/typed-emitter": "^1.2.0",
     "@sapphire/type": "^2.1.0",
     "asynckit": "^0.4.0",
     "combined-stream": "^1.0.8",

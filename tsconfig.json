@@ -1,11 +1,11 @@
 {
     "compilerOptions": {
         "lib": [
-            "ESNext"
+            "ES6"
         ],
         "module": "CommonJS",
         "moduleResolution": "Node",
-        "target": "ESNext",
+        "target": "ES6",
         "sourceMap": true,
         "esModuleInterop": true,
         "experimentalDecorators": true,

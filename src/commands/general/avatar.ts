@@ -1,20 +1,15 @@
 import { APIGuildMember } from "discord-api-types/v9";
 import pagination from "../../structures/utils/pagination";
-import mentionInterface from "../../interfaces/mentionInterface";
-export default{
+export default {
   command: "avatar",
   aliases: ["pfp", "av"],
   description: "Gets a users avatar",
   exec: async (ctx) => {
-    let mention: mentionInterface = ctx.getMention(ctx.args.join(" ")),
-      user: APIGuildMember | undefined = await ctx.getGuildMember(
-        ctx.worker,
-        ctx.message.guild_id,
-        mention.error ? ctx.message.author.id : mention.member
-      ),
+    let user: APIGuildMember = await ctx
+        .server(ctx.worker, ctx.message.guild_id, ctx.message.author.id)
+        .getMember(ctx.args.join(" ")),
       sizes: (string | number)[] = ["Direct", 128, 256, 512, 1024, 2048, 4096],
       types: string[] = ["png", "jpg", "webp"];
-
     if (ctx.getAvatarURL(user.user, "gif").endsWith("gif")) types.push("gif");
     let avatarEmbeds: {}[] = types.reduce(
       (X, Y) => (

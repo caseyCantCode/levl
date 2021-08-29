@@ -1,11 +1,11 @@
-import { APIGuildMember, APIUser, Snowflake } from "discord-api-types";
+import { APIGuildMember, APIUser, Snowflake, APIRole } from "discord-api-types";
 import { CommandContext, Worker } from "discord-rose";
-import mentionInterface from "../interfaces/mentionInterface"
+import Collection from "@discordjs/collection";
 export class LevelContext extends CommandContext {
   color = parseInt("FCA3D9", 16);
-  worker = this.worker
+  worker = this.worker;
   getTag(user: APIUser) {
-    return user.username + user.discriminator;
+    return user.username + "#" + user.discriminator;
   }
   getAvatarURL(
     user: APIUser,
@@ -20,36 +20,31 @@ export class LevelContext extends CommandContext {
       Number(user.discriminator) % 5
     }.png`;
   }
-  getMention(mentionString: string): mentionInterface {
-    if (!mentionString) return { error: true };
-    let types = [
-      { name: "channel", regex: /<#!?(\d{17,20})>/im },
-      { name: "member", regex: /<@!?(\d{17,20})>/im },
-      { name: "role", regex: /<@&!?(\d{17,20})>/im },
-    ];
-    interface typeInterface {
-      name: string;
-      regex: RegExp;
-    }
-    return types.reduce(
-      (X: Object, Y: typeInterface) => (
-        (X[Y.name] = mentionString.match(Y.regex)
-          ? mentionString.match(Y.regex)[1]
-          : undefined),
-        X
-      ),
-      {}
-    );
-  }
 
-  async getGuildMember(
-    worker: Worker,
-    guildID: Snowflake,
-    id: Snowflake
-  ): Promise<APIGuildMember | undefined> {
-    return (
-      (await worker.api.request("GET", `/guilds/${guildID}/members/${id}`)) ||
-      undefined
-    );
+  server(worker: Worker, guildID: Snowflake, author: Snowflake): {} {
+    return {
+      getMember: async (query: string): Promise<APIGuildMember> => {
+        let guildMembers: Collection<Snowflake, APIGuildMember> =
+          await worker.getMembers(guildID);
+        return query
+          ? guildMembers.get(query.replace(/[<@​!?>]/g, "")) ||
+              guildMembers.find((m) =>
+                [m.user.username, m.nick].some((e) =>
+                  e?.toLowerCase().includes(query.toLowerCase())
+                )
+              )
+          : guildMembers.get(author);
+      },
+      getRole: async (query: string) => {
+        let guildRoles: Collection<Snowflake, APIRole> =
+          worker.guildRoles.get(guildID);
+        return query
+          ? guildRoles.get(query.replace(/[<@​&>]/g, "")) ||
+              guildRoles.find((x) =>
+                x?.name.toLowerCase().includes(query.toLowerCase())
+              )
+          : undefined;
+      },
+    };
   }
 }

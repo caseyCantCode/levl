@@ -2,6 +2,7 @@ import { Snowflake, Worker } from "discord-rose";
 import config from "./config.json";
 import flagsMiddleware from "@discord-rose/flags-middleware";
 import { LevelContext } from "./structures/context";
+import { Event } from '@jpbberry/typed-emitter'
 import path from "path";
 import handleInteraction from "./events/handleInteractionCreate";
 import fetch from "node-fetch";
@@ -11,12 +12,12 @@ export class LevelWorker extends Worker {
   constructor() {
     super();
     this.once("READY", () => {
-      console.log("Ready");
-    });
+      console.log("Ready")
+    })
     this.commands.CommandContext = LevelContext;
     this.commands
       .error((ctx, err) => {
-        throw err;
+        console.log(err)
       })
       .middleware(flagsMiddleware())
       .middleware((ctx) => {
@@ -37,7 +38,8 @@ export class LevelWorker extends Worker {
       `http://localhost:${this.config.api.port}/owner/${id}?key=${this.config.api.key}`
     );
     const json = await res.json().catch(() => null);
-    return !!json.owner;
+    return json.owner;
   }
 }
 new LevelWorker();
+

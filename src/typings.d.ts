@@ -1,5 +1,5 @@
 import { LevelContext as NewContext } from './structures/context'
-
+import subcommandInterface from "./interfaces/subcommandInterface"
 declare module 'discord-rose/dist/typings/lib' {
 
   interface LevelContext extends NewContext { }
@@ -8,6 +8,7 @@ declare module 'discord-rose/dist/typings/lib' {
     description: string
     command: string,
     aliases: string[],
-    ownerOnly?: boolean
+    ownerOnly?: boolean,
+    subcommands?: subcommandInterface[]
   }
 }
