@@ -1,5 +1,11 @@
-import { APIGuildMember, APIUser, Snowflake, APIRole } from "discord-api-types";
-import { CommandContext, Worker } from "discord-rose";
+import {
+  APIGuildMember,
+  APIUser,
+  Snowflake,
+  APIRole,
+  APIGuild,
+} from "discord-api-types";
+import { CommandContext } from "discord-rose";
 import Collection from "@discordjs/collection";
 export class LevelContext extends CommandContext {
   color = parseInt("FCA3D9", 16);
@@ -20,12 +26,14 @@ export class LevelContext extends CommandContext {
       Number(user.discriminator) % 5
     }.png`;
   }
-
-  server(worker: Worker, guildID: Snowflake, author: Snowflake): {} {
+  async getGuild(guildID: Snowflake): Promise<APIGuild> {
+    return await this.worker.api.request("GET", `/guilds/${guildID}`);
+  }
+  server(guildID: Snowflake, author: Snowflake): {} {
     return {
       getMember: async (query: string): Promise<APIGuildMember> => {
         let guildMembers: Collection<Snowflake, APIGuildMember> =
-          await worker.getMembers(guildID);
+          await this.worker.getMembers(guildID);
         return query
           ? guildMembers.get(query.replace(/[<@​!?>]/g, "")) ||
               guildMembers.find((m) =>
@@ -37,7 +45,7 @@ export class LevelContext extends CommandContext {
       },
       getRole: async (query: string) => {
         let guildRoles: Collection<Snowflake, APIRole> =
-          worker.guildRoles.get(guildID);
+          this.worker.guildRoles.get(guildID);
         return query
           ? guildRoles.get(query.replace(/[<@​&>]/g, "")) ||
               guildRoles.find((x) =>

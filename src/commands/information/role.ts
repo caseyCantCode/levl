@@ -36,7 +36,7 @@ export default {
       description: "Allows you to get info on a role in the server",
       exec: async (ctx) => {
         let role = await ctx
-          .server(ctx.worker, ctx.message.guild_id, ctx.message.author.id)
+          .server(ctx.message.guild_id, ctx.message.author.id)
           .getRole(ctx.args.slice(1).join(" "));
         if (!role) return await ctx.reply("Please include a valid role!");
         let getType = (type: boolean): string => {

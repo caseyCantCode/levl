@@ -3,7 +3,7 @@ import { LevelWorker } from "../worker";
 
 export default async (data, worker: LevelWorker): Promise<any> => {
   let paginationObject = worker.pagination[data.message.id];
-  if (paginationObject) {
+  if (paginationObject && data.member.user.id === paginationObject.author) {
     let editMessage = async () => {
         worker.api.request(
           "POST",

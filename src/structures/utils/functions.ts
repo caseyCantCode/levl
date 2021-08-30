@@ -1,5 +1,4 @@
 import { Snowflake } from "discord-api-types";
-import { CommandContext } from "discord-rose";
 function idToBinary(num: Snowflake) {
   let bin = "";
   let high = parseInt(num.slice(0, -10)) || 0;
@@ -28,7 +27,7 @@ export function getCreatedAt(id: Snowflake) {
   return { date: date.toISOString(), timestamp: dateTimestamp };
 }
 
-export async function getMemberRoles(ctx, query) {
+export async function getMemberRoles(ctx, query: string): Promise<{}[]> {
   let currentMember = await ctx
       .server(ctx.worker, ctx.message.guild_id, ctx.message.author.id)
       .getMember(query),

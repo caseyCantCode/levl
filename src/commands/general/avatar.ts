@@ -6,7 +6,7 @@ export default {
   description: "Gets a users avatar",
   exec: async (ctx) => {
     let user: APIGuildMember = await ctx
-        .server(ctx.worker, ctx.message.guild_id, ctx.message.author.id)
+        .server(ctx.message.guild_id, ctx.message.author.id)
         .getMember(ctx.args.join(" ")),
       sizes: (string | number)[] = ["Direct", 128, 256, 512, 1024, 2048, 4096],
       types: string[] = ["png", "jpg", "webp"];

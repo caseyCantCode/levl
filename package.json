@@ -5,6 +5,7 @@
   "main": "src/index.ts",
   "dependencies": {
     "@discord-rose/flags-middleware": "^1.0.2",
+    "@jpbberry/cache": "^1.0.4",
     "@jpbberry/load-routes": "^1.0.3",
     "@jpbberry/typed-emitter": "^1.2.0",
     "@sapphire/type": "^2.1.0",
@@ -17,12 +18,14 @@
     "form-data": "^3.0.1",
     "mime-db": "^1.49.0",
     "mime-types": "^2.1.32",
+    "mongoose": "^6.0.2",
     "node-fetch": "^2.6.1",
     "path": "^0.12.7",
     "prisma": "^2.29.1",
     "querystring": "^0.2.1",
     "readdir-plus": "^1.1.1",
     "string-toolkit": "^1.5.0",
+    "string.db": "^1.1.0",
     "ws": "^8.2.0"
   },
   "devDependencies": {

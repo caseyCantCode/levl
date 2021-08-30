@@ -8,7 +8,6 @@ const master: Master = new Master(path.resolve("dist/" + "worker.js"), {
   cache: {
     voiceStates: false,
     members: false,
-    messages: true,
     channels: true,
     self: true,
     guilds: true,
