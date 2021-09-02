@@ -2,16 +2,16 @@ import { Snowflake, Worker } from "discord-rose";
 import config from "./config.json";
 import flagsMiddleware from "@discord-rose/flags-middleware";
 import { LevelContext } from "./structures/context";
-import { Event } from "@jpbberry/typed-emitter";
 import path from "path";
 import handleInteraction from "./events/handleInteractionCreate";
 import fetch from "node-fetch";
 import { Database } from "./structures/database";
-import { createUnparsedSourceFile } from "typescript";
+import { levlAPI } from "./structures/levlAPI";
 export class LevelWorker extends Worker {
   config = config;
   pagination = {};
   db = new Database(this);
+  levlAPI = new levlAPI();
   constructor() {
     super();
     this.once("READY", () => {
@@ -28,9 +28,9 @@ export class LevelWorker extends Worker {
         else return this.isOwner(ctx.author.id);
       })
       .middleware(async (ctx) => {
-        if(ctx.command.ownerOnly) return true;
+        if (ctx.command.ownerOnly) return true;
 
-        await this.db.commandDB.createCommand(ctx.command.command, Date.now())
+        await this.db.commandDB.createCommand(ctx.command.command, Date.now());
         return true;
       })
       .prefix("l.")
@@ -43,10 +43,9 @@ export class LevelWorker extends Worker {
     });
   }
   async isOwner(id: Snowflake) {
-    const res = await fetch(
-      `http://localhost:${this.config.api.port}/owner/${id}?key=${this.config.api.key}`
+    const json = await this.levlAPI.request(
+      `/owner/${id}?key=${this.config.api.key}`
     );
-    const json = await res.json().catch(() => null);
     return json.owner;
   }
 }

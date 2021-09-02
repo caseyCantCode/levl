@@ -7,8 +7,8 @@ export default {
     let worker: APIGuildMember = await ctx
         .server(ctx.message.guild_id, ctx.message.author.id)
         .getMember(ctx.worker.user.id),
-      avatar = ctx.getAvatarURL(worker.user),
-      currentGuild = await ctx.getGuild(ctx.message.guild_id);
+      avatar: string = ctx.getAvatarURL(worker.user),
+      currentGuild: {[key: string]: {}} = await ctx.getGuild(ctx.message.guild_id);
     return await ctx.embed
       .color(ctx.color)
       .author("Levl commands", avatar)

@@ -1,13 +1,12 @@
 import config from "../config.json";
 
-import { RestManager, Thread } from "discord-rose";
+import { Thread } from "discord-rose";
 
 import { LoadRoutes as loadRoutes } from "@jpbberry/load-routes";
 
 import express from "express";
 
 import { APIWorker } from "./APIWorker";
-
 interface APIOptions {
   routesPath: string;
 }

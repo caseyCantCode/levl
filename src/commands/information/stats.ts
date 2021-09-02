@@ -42,9 +42,10 @@ export default {
           guilds: worker.guilds.size,
           roles: worker.guildRoles.reduce((a, b) => a + b.size, 0)
         }; stats`
-      )) as unknown as Stats[], databasePing: number = Date.now();
-      await ctx.worker.db.commandDB.getCommands()
-      databasePing = Date.now() - databasePing
+      )) as unknown as Stats[],
+      databasePing: number = Date.now();
+    await ctx.worker.db.commandDB.getCommands();
+    databasePing = Date.now() - databasePing;
     let worker: APIGuildMember = await ctx
         .server(ctx.message.guild_id, ctx.message.author.id)
         .getMember(ctx.worker.user.id),
@@ -61,13 +62,15 @@ export default {
             (x: number, y: Collection<Snowflake, APIRole>) => (x += y.size),
             0
           )
-          .toLocaleString()}**`
+          .toLocaleString()}**`,
+        true
       )
       .field(
         "Made with",
         `Discord Rose | **1.5.1**\nNode.js | **${process.version}**\nRam | **${
           Math.round((process.memoryUsage().heapUsed / 1024 / 1024) * 100) / 100
-        } MB** `
+        } MB** `,
+        true
       )
       .field(
         "Command usage",
@@ -81,7 +84,8 @@ export default {
           await ctx.worker.db.commandDB.getTimeBoundCommands(
             1000 * 60 * 60 * 24 * 7
           )
-        ).length.toLocaleString()}**`
+        ).length.toLocaleString()}**`,
+        true
       )
       .field(
         "Shards",
@@ -90,9 +94,10 @@ export default {
         }**\nShard | **${currentShard + 1} / ${stats.reduce(
           (a, cluster) => a + Object.keys(cluster.shards).length,
           0
-        )}**`
+        )}**`,
+        true
       )
-      .field("Ping", `Database ping | **${databasePing}ms**`)
+      .field("Ping", `Database | **${databasePing}ms**\nShard | **${Array.from(ctx.worker.shards)[currentShard][1].ping}ms**`, true)
       .field(
         "Useful Resources",
         `[Command List](${ctx.worker.config.dashboard.site}/commands)\n[Dashboard](${ctx.worker.config.dashboard.site})`

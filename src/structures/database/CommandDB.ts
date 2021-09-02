@@ -20,7 +20,6 @@ export class CommandDB {
   }
   async getTimeBoundCommands(time: string) {
     const commands = await this.getCommands();
-
     return commands.filter((e) => Date.now() - e.time < +time);
   }
   async createCommand(command, time: number): Promise<CommandDoc> {
