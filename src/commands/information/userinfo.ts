@@ -6,6 +6,7 @@ export default {
   command: "userinfo",
   aliases: ["ui"],
   description: "Sends user information",
+  category: "information",
   exec: async (ctx) => {
     let user: APIGuildMember = await ctx
         .server(ctx.message.guild_id, ctx.message.author.id)
@@ -14,10 +15,10 @@ export default {
       currentGuild: { [key: string]: {} } = await ctx.getGuild(
         ctx.message.guild_id
       ),
-      json = await ctx.worker.levlAPI.request(
+      json: {[key: string]: []} = await ctx.worker.levlAPI.request(
         `/connections/${user.user.id}?key=${ctx.worker.config.api.key}`
       ),
-      formatConnectionName = (name: string) => {
+      formatConnectionName: Function = (name: string) => {
         if (/(youtube|github)/gi.test(name))
           return name
             .replace(/(\b\w)/gi, (w) => w.toUpperCase())
@@ -53,9 +54,13 @@ export default {
           emoji: "<:levl_twitch:882810829702057994>",
           link: (_con) => `https://twitch.tv/${_con.name}`,
         },
+        steam: {
+          emoji: "<:levl_steam:882822410246717450>",
+          link: (_con) => `https://steamcommunity.com/profiles/${_con.id}`
+        }
       };
 
-    let infoEmbed = ctx.embed
+    let infoEmbed: {[key: string]: string} = ctx.embed
         .color(ctx.color)
         .title(
           `${
@@ -82,9 +87,7 @@ export default {
           )}:D> (<t:${Math.round(
             new Date(user.joined_at).getTime() / 1000
           )}:R>)`
-        )
-        //@ts-expect-error
-        .field( "Pending", { false: "<:levl_cross:881435789601435748>", true: "<:levl_check:881435831141806151>", }[user.is_pending]),
+        ),
       connectionEmbed: {} = ctx.embed
         .color(ctx.color)
         .title(
@@ -97,20 +100,18 @@ export default {
         .thumbnail(avatar)
         .field(
           "Connections",
-          `${json.connections
-            .map(
-              (_connection) =>
-                `${
-                  Object.keys(connections).includes(_connection.type)
-                    ? `**${formatConnectionName(_connection.type)}** ${
-                        connections[_connection.type].emoji
-                      }\n<:reply:874145869526630480> [${
-                        _connection.name
-                      }](${connections[_connection.type].link(_connection)})`
-                    : " "
-                }`
+          json.connections
+            .map((_connection: {[key: string]: string}) =>
+              Object.keys(connections).includes(_connection.type)
+                ? `**${formatConnectionName(_connection.type)}** ${
+                    connections[_connection.type].emoji
+                  }\n<:reply:874145869526630480> [${
+                    _connection.name
+                  }](${connections[_connection.type].link(_connection)})`
+                : undefined
             )
-            .join("\n")}`
+            .filter((x: undefined | string) => x)
+            .join("\n")
         ),
       embeds: [{}] = [infoEmbed];
     if (json.connections.length) embeds.push(connectionEmbed);

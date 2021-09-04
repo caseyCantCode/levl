@@ -8,6 +8,7 @@ export default {
   command: "eval",
   aliases: ["e", "evak"],
   description: "Eval's code",
+  category: "owner",
   ownerOnly: true,
   exec: async (ctx): Promise<void> => {
     let code = ctx.args.join(" ").replace(/`{3}(\w+)?/g, "");

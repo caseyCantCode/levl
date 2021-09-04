@@ -71,20 +71,9 @@ export default class Permissions {
   flags = flags;
   formattedFlags = formattedFlags;
   constructor() {}
-  resolve(bit: [] | string) {
-    if (Array.isArray(bit))
-      return bit.map((p) => this.resolve(p)).reduce((t, v) => t | v, 0);
-
-    if (typeof bit === "string" && typeof flags[bit] !== "undefined")
-      return flags[bit];
-  }
-
-  has(bit, bitfield): boolean {
-    bit = this.resolve(bit);
-
-    return (bitfield & bit) === bit;
-  }
   getFlags(bitfield) {
-    return Object.keys(flags).filter((flag) => this.has(flag, bitfield));
+    return Object.entries(flags)
+      .filter((x) => x[1] & bitfield)
+      .map((x) => x[0]);
   }
 }

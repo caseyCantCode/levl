@@ -4,6 +4,7 @@ export default {
   command: "avatar",
   aliases: ["pfp", "av"],
   description: "Gets a users avatar",
+  category: "general",
   exec: async (ctx) => {
     let user: APIGuildMember = await ctx
         .server(ctx.message.guild_id, ctx.message.author.id)

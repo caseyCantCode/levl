@@ -3,6 +3,7 @@ export default {
   command: "help",
   aliases: ["h"],
   description: "Gives multiple resource links including the command page",
+  category: "general",
   exec: async (ctx) => {
     let worker: APIGuildMember = await ctx
         .server(ctx.message.guild_id, ctx.message.author.id)

@@ -5,6 +5,7 @@ export default {
   command: "role",
   aliases: ["r"],
   description: "Allows you to view all roles or get info on a role",
+  category: "information",
   subcommands: [
     {
       command: "list",
@@ -128,9 +129,7 @@ export default {
       foundSubcommand = this.subcommands.find(
         (x) =>
           (subcommand && x.command === subcommand.toLowerCase()) ||
-          (subcommand &&
-            x.aliases &&
-            x.aliases.includes(subcommand.toLowerCase()))
+          (x.aliases && x.aliases.includes(subcommand.toLowerCase()))
       );
     if (!subcommand || !foundSubcommand)
       return await ctx.reply(

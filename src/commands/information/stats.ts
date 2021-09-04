@@ -18,6 +18,7 @@ export default {
   command: "stats",
   aliases: ["meta"],
   description: "Sends bot statistics",
+  category: "information",
   exec: async (ctx) => {
     let currentShard: number = ctx.guild
         ? Number(
@@ -55,7 +56,7 @@ export default {
       .author("Levl Stats", avatar)
       .field(
         "Caching",
-        `Guilds | **${ctx.worker.guilds.size.toLocaleString()}**\nChannels | **${ctx.worker.channels.size.toLocaleString()}**\nRoles | **${Array.from(
+        `Guilds | **${ctx.worker.guilds.size.toLocaleString()}**\nRoles | **${Array.from(
           ctx.worker.guildRoles.values()
         )
           .reduce(

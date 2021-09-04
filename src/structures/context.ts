@@ -20,7 +20,7 @@ export class LevelContext extends CommandContext {
   ): string {
     if (user.avatar)
       return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${
-        type ?? (user.avatar.startsWith("a_") ? "gif" : "png")
+        type ?? (user.avatar.startsWith("a_") && !type ? "gif" : type ? type : "png")
       }?size=${size}`;
     return `https://cdn.discordapp.com/embed/avatars/${
       Number(user.discriminator) % 5
