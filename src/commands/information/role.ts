@@ -23,7 +23,7 @@ export default {
           {
             length: Math.ceil(roles.length / 25),
           },
-          (_, i) => roles.slice(i * 25, i * 25 + 25)
+          (_, i: number) => roles.slice(i * 25, i * 25 + 25)
         );
         roles = roles.map((x) =>
           ctx.embed.color(ctx.color).title("Roles").description(formatList(x))
