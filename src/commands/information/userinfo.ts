@@ -2,6 +2,44 @@ import { APIGuildMember, APIRole, Snowflake } from "discord-api-types/v9";
 import Collection from "@discordjs/collection";
 import { formatList, getCreatedAt } from "../../structures/utils/functions";
 import pagination from "../../structures/utils/pagination";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export default {
   command: "userinfo",
   aliases: ["ui"],
