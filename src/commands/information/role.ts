@@ -23,7 +23,7 @@ export default {
           {
             length: Math.ceil(roles.length / 25),
           },
-          (_, i) => roles.slice(i * 25, i * 25 + 25)
+          (_, i: number) => roles.slice(i * 25, i * 25 + 25)
         );
         roles = roles.map((x) =>
           ctx.embed.color(ctx.color).title("Roles").description(formatList(x))
@@ -41,8 +41,9 @@ export default {
           .getRole(ctx.args.slice(1).join(" "));
         if (!role) return await ctx.reply("Please include a valid role!");
         let getType = (type: boolean): string => {
-          return type ? "Yes" : "No";
-        };
+            return type ? "Yes" : "No";
+          },
+          permissionsArray = ["General", "Text", "Voice"];
         let infoEmbed = ctx.embed
             .color(ctx.color)
             .title(role.name)
@@ -103,15 +104,7 @@ export default {
             [[], [], []]
           )
           .map((e, c) => [
-            `• __${
-              c === 0
-                ? "General"
-                : c === 1
-                ? "Text"
-                : c === 2
-                ? "Voice"
-                : "Unknown"
-            } Permissions__`,
+            `• __${permissionsArray[c]} Permissions__`,
             e
               .sort((a, b) => a.split("`")[1].localeCompare(b.split("`")[1]))
               .join("\n"),
@@ -128,8 +121,9 @@ export default {
     let subcommand = ctx.args[0],
       foundSubcommand = this.subcommands.find(
         (x) =>
-          (subcommand && x.command === subcommand.toLowerCase()) ||
-          (x.aliases && x.aliases.includes(subcommand.toLowerCase()))
+          subcommand &&
+          (x.command === subcommand.toLowerCase() ||
+            (x.aliases && x.aliases.includes(subcommand.toLowerCase())))
       );
     if (!subcommand || !foundSubcommand)
       return await ctx.reply(

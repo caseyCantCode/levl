@@ -4,7 +4,6 @@ import flagsMiddleware from "@discord-rose/flags-middleware";
 import { LevelContext } from "./structures/context";
 import path from "path";
 import handleInteraction from "./events/handleInteractionCreate";
-import fetch from "node-fetch";
 import { Database } from "./structures/database";
 import { levlAPI } from "./structures/levlAPI";
 export class LevelWorker extends Worker {
